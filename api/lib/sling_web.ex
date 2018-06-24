@@ -28,8 +28,9 @@ defmodule SlingWeb do
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/sling_web/templates",
-                        namespace: SlingWeb
+      use Phoenix.View,
+        root: "lib/sling_web/templates",
+        namespace: SlingWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]

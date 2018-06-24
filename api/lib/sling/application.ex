@@ -11,7 +11,7 @@ defmodule Sling.Application do
       # Start the Ecto repository
       supervisor(Sling.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(SlingWeb.Endpoint, []),
+      supervisor(SlingWeb.Endpoint, [])
       # Start your own worker by calling: Sling.Worker.start_link(arg1, arg2, arg3)
       # worker(Sling.Worker, [arg1, arg2, arg3]),
     ]
