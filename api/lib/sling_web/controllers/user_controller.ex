@@ -15,8 +15,6 @@ defmodule SlingWeb.UserController do
         |> render("show.json", user: user, jwt: token)
 
       {:error, changeset} ->
-        IO.inspect(changeset)
-
         conn
         |> put_status(400)
         |> render(SlingWeb.ChangesetView, "error.json", changeset: changeset)
