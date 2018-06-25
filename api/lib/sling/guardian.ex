@@ -8,9 +8,7 @@ defmodule Sling.Guardian do
   end
 
   def resource_from_claims(%{"sub" => id}) do
-    case Account.get_user!(id) do
-      nil -> {:error, :resource_not_found}
-      user -> {:ok, user}
-    end
+    resource = Account.get_user!(id)
+    {:ok, resource}
   end
 end

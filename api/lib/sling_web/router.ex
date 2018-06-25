@@ -3,16 +3,22 @@ defmodule SlingWeb.Router do
 
   pipeline :api do
     plug(:accepts, ["json"])
-    plug(Guardian.Plug.VerifyHeader, realm: "Bearer")
-    plug(Guardian.Plug.LoadResource)
+  end
+
+  pipeline :jwt_authenticated do
+    plug(Sling.Guardian.AuthPipeline)
   end
 
   scope "/api", SlingWeb do
     pipe_through(:api)
 
     resources("/users", UserController, only: [:create])
-
     post("/sessions", SessionController, :create)
+  end
+
+  scope "/api", SlingWeb do
+    pipe_through([:api, :jwt_authenticated])
+
     delete("/sessions", SessionController, :delete)
     post("/sessions/refresh", SessionController, :refresh)
   end
