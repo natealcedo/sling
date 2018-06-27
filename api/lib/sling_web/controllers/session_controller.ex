@@ -19,6 +19,23 @@ defmodule SlingWeb.SessionController do
     end
   end
 
+  def refresh(conn, _params) do
+    user = Guardian.Plug.current_resource(conn)
+    jwt = Guardian.Plug.current_token(conn)
+
+    case Guardian.refresh(jwt) do
+      {:ok, _, {new_token, _}} ->
+        conn
+        |> put_status(200)
+        |> render("show.json", user: user, jwt: new_token)
+
+      {:error, _reason} ->
+        conn
+        |> put_status(401)
+        |> render("forbidden.json", error: "Not authenticated")
+    end
+  end
+
   def delete(conn, _) do
     jwt = Guardian.Plug.current_token(conn)
     Guardian.revoke(jwt)
