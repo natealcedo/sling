@@ -12,7 +12,7 @@ defmodule SlingWeb.UserController do
 
         conn
         |> put_status(201)
-        |> render("show.json", user: user, jwt: token)
+        |> render("user.json", user: user, jwt: token)
 
       {:error, changeset} ->
         conn
