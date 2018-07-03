@@ -2,7 +2,7 @@ import React from 'react';
 import propTypes from "prop-types"
 
 
-const Input = ({ input, label, type, placeholder, style, meta }: Props) =>
+const Input = ({ input, label, type, placeholder, style, meta }) =>
   <div style={{ marginBottom: '1rem' }}>
     {label && <label htmlFor={input.name}>{label}</label>}
     <input
@@ -27,9 +27,7 @@ Input.propTypes = {
 }
 
 Input.defaultProps = {
-  input: {
-    name: 'input'
-  },
+  input: {},
   label: '',
   type: '',
   placeholder: '',
