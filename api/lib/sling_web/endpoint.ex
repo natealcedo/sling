@@ -43,6 +43,7 @@ defmodule SlingWeb.Endpoint do
     signing_salt: "i+cCZXOE"
   )
 
+  plug(CORSPlug)
   plug(SlingWeb.Router)
 
   @doc """
