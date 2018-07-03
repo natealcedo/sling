@@ -8,7 +8,7 @@ import Navbar from '../../components/Navbar';
 const Signup = props => (
   <div style={{ flex: 1 }}>
     <Navbar />
-    <SignupForm onSubmit={props.signup} />
+    <SignupForm onSubmit={props.signup} {...props} />
   </div>
 )
 

@@ -8,29 +8,29 @@ function setCurrentUser(dispatch, response) {
   })
 }
 
-export function login(data, router) {
+export function login(data, history) {
   return dispatch => api.post('/sessions', data)
     .then((response) => {
       setCurrentUser(dispatch, response);
       dispatch(reset('login'));
-      router.transitionTo('/');
+      history.push('/');
     });
 }
 
-export function signup(data, router) {
+export function signup(data, history) {
   return dispatch => api.post('/users', data)
     .then((response) => {
       setCurrentUser(dispatch, response);
       dispatch(reset('signup'));
-      router.transitionTo('/');
+      history.push('/');
     });
 }
 
-export function logout(router) {
+export function logout(history) {
   return dispatch => api.delete('/sessions')
     .then(() => {
       localStorage.removeItem('token');
       dispatch({ type: 'LOGOUT' });
-      router.transitionTo('/login');
+      history.push('/login');
     });
 }

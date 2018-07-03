@@ -14,57 +14,68 @@ const styles = StyleSheet.create({
 });
 
 
-const SignupForm = ({ submitting, onSubmit }) => (
-  <form
-    className={`card ${css(styles.card)}`}
-    onSubmit={onSubmit}
-  >
-    <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>Create an account</h3>
-    <Field
-      name="username"
-      type="text"
-      component={Input}
-      placeholder="Username"
-      className="form-control"
-    />
-    <Field
-      name="email"
-      type="email"
-      component={Input}
-      placeholder="Email"
-      className="form-control"
-    />
-    <Field
-      name="password"
-      type="password"
-      component={Input}
-      placeholder="Password"
-      className="form-control"
-    />
-    <button
-      type="submit"
-      disabled={submitting}
-      className="btn btn-block btn-primary"
-    >
-      {submitting ? 'Submitting...' : 'Sign up'}
-    </button>
-    <hr style={{ margin: '2rem 0' }} />
-    <Link to="/login" className="btn btn-block btn-secondary">
-      Login to your account
+class SignupForm extends React.Component {
+
+  static propTypes = {
+    onSubmit: propTypes.func.isRequired,
+    submitting: propTypes.bool,
+    handleSubmit: propTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    submitting: false
+  }
+
+  handleSubmit = data => this.props.onSubmit(data, this.props.history);
+
+  render() {
+    const { handleSubmit, submitting } = this.props;
+
+    return (
+      <form
+        className={`card ${css(styles.card)}`}
+        onSubmit={handleSubmit(this.handleSubmit)}
+      >
+        <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>Create an account</h3>
+        <Field
+          name="username"
+          type="text"
+          component={Input}
+          placeholder="Username"
+          className="form-control"
+        />
+        <Field
+          name="email"
+          type="email"
+          component={Input}
+          placeholder="Email"
+          className="form-control"
+        />
+        <Field
+          name="password"
+          type="password"
+          component={Input}
+          placeholder="Password"
+          className="form-control"
+        />
+        <button
+          type="submit"
+          disabled={submitting}
+          className="btn btn-block btn-primary"
+        >
+          {submitting ? 'Submitting...' : 'Sign up'}
+        </button>
+        <hr style={{ margin: '2rem 0' }} />
+        <Link to="/login" className="btn btn-block btn-secondary">
+          Login to your account
         </Link>
-  </form>
-)
+      </form>
+    )
+  }
 
-
-SignupForm.propTypes = {
-  onSubmit: propTypes.func.isRequired,
-  submitting: propTypes.bool,
-  handleSubmit: propTypes.func.isRequired,
 }
 
-SignupForm.defaultProps = {
-  submitting: false
-}
+
 
 const validate = (values) => {
   const errors = {};

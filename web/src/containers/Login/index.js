@@ -10,7 +10,7 @@ class Login extends Component {
     login: func.isRequired,
   }
 
-  handleLogin = data => this.props.login(data)
+  handleLogin = data => this.props.login(data, this.props.history)
 
 
   render() {
