@@ -44,3 +44,5 @@ export function logout(history) {
       history.push('/login');
     });
 }
+
+export const unauthenticate = () => ({ type: 'AUTHENTICATION_FAILURE' });
