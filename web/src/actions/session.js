@@ -2,10 +2,20 @@ import { reset } from "redux-form";
 import api from "../api";
 
 function setCurrentUser(dispatch, response) {
-  localStorage.setItem('token', JSON.stringify(response.meta.token))
+  localStorage.setItem('token', response.meta.jwt);
   dispatch({
     type: 'AUTHENTICATION_SUCCESS', response
   })
+}
+
+export function authenticate() {
+  return dispatch => history => api.post('/sessions/refresh')
+    .then(response => {
+      setCurrentUser(dispatch, response)
+    }).catch(() => {
+      localStorage.removeItem('token');
+      history.push('/login')
+    })
 }
 
 export function login(data, history) {
