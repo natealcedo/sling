@@ -17,9 +17,11 @@ defmodule SlingWeb.Router do
   end
 
   scope "/api", SlingWeb do
-    pipe_through([:api, :jwt_authenticated])
+    # pipe_through([:api, :jwt_authenticated])
 
+    pipe_through(:api)
     delete("/sessions", SessionController, :delete)
     post("/sessions/refresh", SessionController, :refresh)
+    resources("/rooms", RoomController, except: [:new, :edit])
   end
 end
