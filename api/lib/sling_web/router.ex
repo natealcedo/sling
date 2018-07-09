@@ -23,5 +23,6 @@ defmodule SlingWeb.Router do
     delete("/sessions", SessionController, :delete)
     post("/sessions/refresh", SessionController, :refresh)
     resources("/rooms", RoomController, except: [:new, :edit])
+    resources("/user_rooms", UserRoomController, except: [:new, :edit])
   end
 end
