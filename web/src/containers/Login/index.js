@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { func } from "prop-types";
+import { func, object } from "prop-types";
 import { connect } from 'react-redux';
 import { login } from "../../actions/session";
 import LoginForm from '../../components/LoginForm';
@@ -8,6 +8,7 @@ import Navbar from "../../components/Navbar"
 class Login extends Component {
   static propTypes = {
     login: func.isRequired,
+    history: object.isRequired,
   }
 
   handleLogin = data => this.props.login(data, this.props.history)
