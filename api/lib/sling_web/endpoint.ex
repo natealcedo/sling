@@ -1,6 +1,7 @@
 defmodule SlingWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :sling
 
+  plug(CORSPlug)
   socket("/socket", SlingWeb.UserSocket)
 
   # Serve at "/" the static files from "priv/static" directory.
