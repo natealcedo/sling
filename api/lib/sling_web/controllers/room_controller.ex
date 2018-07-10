@@ -20,11 +20,6 @@ defmodule SlingWeb.RoomController do
       conn
       |> put_status(201)
       |> render("show.json", room: room)
-    else
-      {:error, changeset} ->
-        conn
-        |> put_status(:unprocessable_entity)
-        |> render(SlingWeb.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
@@ -32,16 +27,10 @@ defmodule SlingWeb.RoomController do
     current_user = Guardian.Plug.current_resource(conn)
     room = Chat.get_room!(room_id)
 
-    case Chat.create_user_room(%{user_id: current_user.id, room_id: room.id}) do
-      {:ok, _} ->
-        conn
-        |> put_status(201)
-        |> render("show.json", %{room: room})
-
-      {:error, changeset} ->
-        conn
-        |> put_status(:unprocessable_entity)
-        |> render(SlingWeb.ChangesetView, "error.json", changeset: changeset)
+    with {:ok, _} <- Chat.create_user_room(%{user_id: current_user.id, room_id: room.id}) do
+      conn
+      |> put_status(201)
+      |> render("show.json", %{room: room})
     end
   end
 
