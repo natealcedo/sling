@@ -8,8 +8,8 @@ function setCurrentUser(dispatch, response) {
   })
 }
 
-export function authenticate() {
-  return dispatch => history => api.post('/sessions/refresh')
+export function authenticate(history) {
+  return dispatch => api.post('/sessions/refresh')
     .then(response => {
       setCurrentUser(dispatch, response)
     }).catch(() => {
