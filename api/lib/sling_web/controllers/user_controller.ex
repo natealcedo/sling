@@ -5,6 +5,10 @@ defmodule SlingWeb.UserController do
 
   action_fallback(SlingWeb.FallbackController)
 
+  def join(conn, _params) do
+    conn
+  end
+
   def create(conn, params) do
     case Account.create_user(params) do
       {:ok, user} ->

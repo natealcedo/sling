@@ -3,26 +3,46 @@ defmodule SlingWeb.RoomController do
 
   alias Sling.Chat
   alias Sling.Chat.Room
+  alias Sling.Guardian
 
-  action_fallback SlingWeb.FallbackController
+  action_fallback(SlingWeb.FallbackController)
 
   def index(conn, _params) do
     rooms = Chat.list_rooms()
     render(conn, "index.json", rooms: rooms)
   end
 
-  def create(conn, %{"room" => room_params}) do
-    with {:ok, %Room{} = room} <- Chat.create_room(room_params) do
+  def create(conn, params) do
+    current_user = Guardian.Plug.current_resource(conn)
+
+    with {:ok, room} <- Chat.create_room(params),
+         {:ok, _} <- Chat.create_user_room(%{user_id: current_user.id, room_id: room.id}) do
       conn
-      |> put_status(:created)
-      |> put_resp_header("location", room_path(conn, :show, room))
+      |> put_status(201)
       |> render("show.json", room: room)
+    else
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(Sling.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    room = Chat.get_room!(id)
-    render(conn, "show.json", room: room)
+  def join(conn, %{"id" => room_id}) do
+    current_user = Guardian.Plug.current_resource(conn)
+    room = Chat.get_room!(room_id)
+
+    case Chat.create_user_room(%{user_id: current_user.id, room_id: room.id}) do
+      {:ok, _} ->
+        conn
+        |> put_status(201)
+        |> render("show.json", %{room: room})
+
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(Sling.ChangesetView, "error.json", changeset: changeset)
+    end
   end
 
   def update(conn, %{"id" => id, "room" => room_params}) do
@@ -33,10 +53,9 @@ defmodule SlingWeb.RoomController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    room = Chat.get_room!(id)
-    with {:ok, %Room{}} <- Chat.delete_room(room) do
-      send_resp(conn, :no_content, "")
-    end
+  def rooms(conn, _params) do
+    current_user = Guardian.Plug.current_resource(conn)
+    rooms = Chat.list_user_rooms(current_user)
+    render(conn, Sling.RoomView, "index.json", %{rooms: rooms})
   end
 end

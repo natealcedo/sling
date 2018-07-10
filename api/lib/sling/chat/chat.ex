@@ -4,6 +4,7 @@ defmodule Sling.Chat do
   """
 
   import Ecto.Query, warn: false
+  import Ecto, only: [assoc: 2]
   alias Sling.Repo
 
   alias Sling.Chat.Room
@@ -113,8 +114,8 @@ defmodule Sling.Chat do
       [%UserRoom{}, ...]
 
   """
-  def list_user_rooms do
-    Repo.all(UserRoom)
+  def list_user_rooms(%Sling.Account.User{} = current_user) do
+    Repo.all(assoc(current_user, :rooms))
   end
 
   @doc """
