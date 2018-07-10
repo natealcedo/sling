@@ -24,7 +24,7 @@ defmodule SlingWeb.RoomController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(Sling.ChangesetView, "error.json", changeset: changeset)
+        |> render(SlingWeb.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
@@ -41,7 +41,7 @@ defmodule SlingWeb.RoomController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(Sling.ChangesetView, "error.json", changeset: changeset)
+        |> render(SlingWeb.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
@@ -56,6 +56,6 @@ defmodule SlingWeb.RoomController do
   def rooms(conn, _params) do
     current_user = Guardian.Plug.current_resource(conn)
     rooms = Chat.list_user_rooms(current_user)
-    render(conn, Sling.RoomView, "index.json", %{rooms: rooms})
+    render(conn, "index.json", %{rooms: rooms})
   end
 end
