@@ -2,6 +2,7 @@ defmodule Sling.Account.User do
   use Ecto.Schema
   import Ecto.Changeset
   alias Sling.Repo
+  alias Sling.Chat.Message
 
   schema "users" do
     field(:username, :string)
@@ -9,6 +10,7 @@ defmodule Sling.Account.User do
     field(:password_hash, :string)
     field(:password, :string, virtual: true)
     many_to_many(:rooms, Sling.Chat.Room, join_through: "user_rooms")
+    has_many(:messages, Message)
 
     timestamps()
   end

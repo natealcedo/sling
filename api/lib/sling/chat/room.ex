@@ -6,6 +6,7 @@ defmodule Sling.Chat.Room do
     field(:name, :string)
     field(:topic, :string)
     many_to_many(:users, Sling.Account.User, join_through: "user_rooms")
+    has_many(:messages, Sling.Chat.Message)
 
     timestamps()
   end
