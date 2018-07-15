@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from "prop-types";
-import { connectToChannel, leaveChannel } from '../../actions/room';
+import { createMessage, connectToChannel, leaveChannel } from '../../actions/room';
+import MessageList from '../../components/MessageList';
+import MessageForm from '../../components/MessageForm';
+import RoomNavbar from '../../components/RoomNavbar';
 
 
 class Room extends Component {
@@ -21,7 +24,6 @@ class Room extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     this.props.connectToChannel(this.props.socket, this.props.match.params.id);
   }
 
@@ -39,9 +41,19 @@ class Room extends Component {
     this.props.leaveChannel(this.props.channel);
   }
 
+  handleMessageCreate = (data) => {
+    this.props.createMessage(this.props.channel, data);
+  }
+
   render() {
     return (
-      <div>{this.props.room.name}</div>
+      <div style={{ display: 'flex', height: '100vh' }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <RoomNavbar room={this.props.room} />
+          <MessageList messages={this.props.messages} />
+          <MessageForm onSubmit={this.handleMessageCreate} />
+        </div>
+      </div>
     );
   }
 }
@@ -51,6 +63,7 @@ export default connect(
     room: state.room.currentRoom,
     socket: state.session.socket,
     channel: state.room.channel,
+    messages: state.room.messages
   }),
-  { connectToChannel, leaveChannel }
+  { createMessage, connectToChannel, leaveChannel }
 )(Room);

@@ -4,8 +4,8 @@ defmodule Sling.Chat.Message do
 
   schema "messages" do
     field(:text, :string)
-    belongs_to(:rooms, Sling.Chat.Room)
-    belongs_to(:users, Sling.Account.User)
+    belongs_to(:room, Sling.Chat.Room)
+    belongs_to(:user, Sling.Account.User)
 
     timestamps()
   end

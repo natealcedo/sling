@@ -42,7 +42,7 @@ defmodule SlingWeb.RoomChannel do
 
   defp broadcast_message(socket, message) do
     message = Repo.preload(message, :user)
-    rendered_message = Phoenix.View.render_one(message, Sling.MessageView, "message.json")
+    rendered_message = Phoenix.View.render_one(message, SlingWeb.MessageView, "message.json")
     broadcast!(socket, "message_created", rendered_message)
   end
 end
