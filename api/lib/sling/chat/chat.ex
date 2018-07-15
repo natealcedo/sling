@@ -214,6 +214,14 @@ defmodule Sling.Chat do
     Repo.all(Message)
   end
 
+  def list_room_messages(room_id) do
+    Sling.Chat.Message
+    |> where([m], m.room_id == ^room_id)
+    |> order_by(desc: :inserted_at, desc: :id)
+    |> preload(:user)
+    |> Sling.Repo.paginate()
+  end
+
   @doc """
   Gets a single message.
 
