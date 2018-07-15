@@ -2,6 +2,7 @@ const initialState = {
   isAuthenticated: false,
   willAuthenticate: true,
   currentUser: {},
+  socket: null,
 };
 
 export default function (state = initialState, action) {
@@ -23,12 +24,19 @@ export default function (state = initialState, action) {
         ...state,
         willAuthenticate: false,
       };
+
+    case 'SOCKET_CONNECTED':
+      return {
+        ...state,
+        socket: action.socket
+      };
     case 'LOGOUT':
       return {
         ...state,
         willAuthenticate: false,
         isAuthenticated: false,
         currentUser: {},
+        socket: null,
       };
     default:
       return state;

@@ -6,6 +6,7 @@ import { authenticate, unauthenticate, logout } from "../actions/session"
 import Home from "./Home";
 import Signup from './Signup';
 import Login from "./Login";
+import Room from "./Room"
 import NotFound from "../components/NotFound";
 import MatchAuthenticated from "../components/MatchAuthenticated";
 import RedirectAuthenticated from "../components/RedirectAuthenticated";
@@ -48,6 +49,7 @@ class App extends React.PureComponent {
           }
           <Switch>
             <MatchAuthenticated exact path="/" component={Home} {...authProps} />
+            <MatchAuthenticated exact path="/r/:id" component={Room} {...authProps} />
             <RedirectAuthenticated exact path="/signup" component={Signup} {...authProps} />
             <RedirectAuthenticated exact path="/login" component={Login} {...authProps} />
             <Route component={NotFound} />

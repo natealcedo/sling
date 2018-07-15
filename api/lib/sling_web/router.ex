@@ -19,7 +19,7 @@ defmodule SlingWeb.Router do
   scope "/api", SlingWeb do
     pipe_through([:api, :jwt_authenticated])
 
-    get("/users/:id/rooms", UserController, :rooms)
+    get("/users/:id/rooms", RoomController, :rooms)
     resources("/rooms", RoomController, only: [:index, :create])
     post("/rooms/:id/join", RoomController, :join)
     delete("/sessions", SessionController, :delete)

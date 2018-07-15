@@ -1,31 +1,22 @@
-import api from "../api";
+export function connectToChannel(socket, roomId) {
+  return dispatch => {
+    if (!socket) {
+      return false;
+    }
 
-export function fetchRooms() {
-  return dispatch => api.fetch('/rooms')
-    .then((response) => {
-      dispatch({ type: 'FETCH_ROOMS_SUCCESS', response });
+    const channel = socket.channel(`rooms:${roomId}`)
+    channel.join().receive('ok', response => {
+      dispatch({ type: 'ROOM_CONNECTED_TO_CHANNEL', response, channel });
     });
+    return false
+  }
 }
 
-export function fetchUserRooms(userId) {
-  return dispatch => api.fetch(`/users/${userId}/rooms`)
-    .then((response) => {
-      dispatch({ type: 'FETCH_USER_ROOMS_SUCCESS', response });
-    });
-}
-
-export function createRoom(data, history) {
-  return dispatch => api.post('/rooms', data)
-    .then((response) => {
-      dispatch({ type: 'CREATE_ROOM_SUCCESS', response });
-      history.push(`/r/${response.data.id}`);
-    });
-}
-
-export function joinRoom(roomId, history) {
-  return dispatch => api.post(`/rooms/${roomId}/join`)
-    .then((response) => {
-      dispatch({ type: 'ROOM_JOINED', response });
-      history.push(`/r/${response.data.id}`);
-    });
+export function leaveChannel(channel) {
+  return (dispatch) => {
+    if (channel) {
+      channel.leave();
+    }
+    dispatch({ type: 'USER_LEFT_ROOM' });
+  };
 }

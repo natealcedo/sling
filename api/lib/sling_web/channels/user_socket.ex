@@ -2,7 +2,7 @@ defmodule SlingWeb.UserSocket do
   use Phoenix.Socket
   alias Sling.Guardian
 
-  channel("rooms:*", Sling.RoomChannel)
+  channel("rooms:*", SlingWeb.RoomChannel)
 
   transport(:websocket, Phoenix.Transports.WebSocket)
 
